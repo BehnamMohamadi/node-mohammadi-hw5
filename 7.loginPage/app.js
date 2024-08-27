@@ -8,9 +8,12 @@ const querystring = require('querystring');
 
 const main = async () => {
 
+  Promise.all([await access("./usersLoginData.json"),
+    await access("./index.html"), await access("./style.css")
+  ])
+
   let usersData = await readFile("./usersLoginData.json", "utf-8")
   usersData = JSON.parse(usersData)
-  console.log(usersData)
   const loginHTMLFile = await readFile("./index.html")
   const loginCSSFile = await readFile("./style.css")
 
@@ -18,9 +21,8 @@ const main = async () => {
 
     const pathName = request.url
     const method = request.method
-    
-    if (pathName === "/login" && method === "GET") {
 
+    if (pathName === "/login" && method === "GET") {
       response.writeHead(200, {
         "Content-Type": "text/html"
       })
@@ -56,9 +58,7 @@ const main = async () => {
           response.end('Username or password is invalid');
         }
       });
-
     } else if (pathName === "/css") {
-
       response.writeHead(200, {
         "Content-Type": "text/css"
       })
@@ -66,13 +66,10 @@ const main = async () => {
       response.write(loginCSSFile)
       response.end()
     } else {
-      response.write("Home")
+      response.write("Not-Found")
       response.end()
     }
   })
-
-
-
 
   server.listen(3001, "127.0.0.1", () => {
     console.info("you are in localHost");

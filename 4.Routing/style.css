@@ -1,0 +1,11 @@
+body {
+  background-color: #8d8c7a;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+h1 {
+  font-size: 24px;
+  color: rgb(14, 4, 4);
+}
