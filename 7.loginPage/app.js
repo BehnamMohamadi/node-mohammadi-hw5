@@ -2,20 +2,24 @@ const {
   createServer
 } = require("node:http")
 const {
-  readFile
+  readFile,
+  access,
+  constants
 } = require("node:fs/promises")
+const {
+  join
+} = require(
+  "node:path"
+)
 const querystring = require('querystring');
 
 const main = async () => {
-
-  Promise.all([await access("./usersLoginData.json"),
-    await access("./index.html"), await access("./style.css")
-  ])
-
   let usersData = await readFile("./usersLoginData.json", "utf-8")
   usersData = JSON.parse(usersData)
   const loginHTMLFile = await readFile("./index.html")
   const loginCSSFile = await readFile("./style.css")
+  const showUserHtml = await readFile(join(__dirname, "assets/index.html"), "utf-8")
+  const showUserCss = await readFile(join(__dirname, "assets/style.css"), "utf-8")
 
   const server = createServer((request, response) => {
 
@@ -30,6 +34,13 @@ const main = async () => {
       response.write(loginHTMLFile)
       response.end()
 
+    } else if (pathName === "/style.css") {
+      response.writeHead(200, {
+        "Content-Type": "text/css"
+      })
+
+      response.write(showUserCss)
+      response.end()
     } else if (pathName === "/login" && method === "POST") {
 
       let body = '';
@@ -47,10 +58,14 @@ const main = async () => {
         const user = usersData.find(u => u.username === username && u.password === password);
 
         if (user) {
+          const userHtml = showUserHtml
+            .replace('{%username%}', username)
+            .replace('{%password%}', password);
           response.writeHead(200, {
             'Content-Type': 'text/html'
           });
-          response.end('Login successful!');
+          response.write(userHtml)
+          response.end();
         } else {
           response.writeHead(400, {
             'Content-Type': 'text/html'

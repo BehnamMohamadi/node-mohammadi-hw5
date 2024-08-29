@@ -1,0 +1,38 @@
+body {
+  box-sizing: border-box;
+  background-color: #dad4d4;
+  width: 100vw;
+  height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  width: 100%;
+  height: 20%;
+}
+
+.user-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  width: calc(60%-400px);
+  margin: 10px 200px;
+  height: 500px;
+}
+
+.data-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #c7c3c3;
+  font-size: 2rem;
+  width: 100%;
+  border-radius: 10px;
+  margin: 10px;
+  height: 200px;
+}
